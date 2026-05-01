@@ -1,0 +1,22 @@
+{
+  "name": "constelacion-amor",
+  "version": "1.0.0",
+  "description": "Juego interactivo de constelacion en forma de corazon.",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon --legacy-watch --watch server.js --watch public --ext js,html,css server.js"
+  },
+  "keywords": [
+    "constelacion",
+    "canvas",
+    "javascript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.10"
+  }
+}
