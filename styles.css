@@ -98,6 +98,11 @@ body.complete .message {
   transform: translateX(-50%) translateY(-4px);
 }
 
+body.shooting-star-complete .message {
+  border-color: rgba(255, 229, 168, 0.7);
+  box-shadow: 0 18px 70px rgba(255, 195, 77, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
 .star {
   position: fixed;
   width: 24px;
@@ -158,6 +163,12 @@ body.complete .message {
   animation: activeStarPulse 1.9s ease-in-out infinite;
 }
 
+body.shooting-star-complete .star.active {
+  background: radial-gradient(circle at 35% 30%, #fff, #ffe6a8 42%, #d89b24 78%);
+  box-shadow: 0 0 18px rgba(255, 230, 168, 0.9), 0 0 46px rgba(255, 200, 87, 0.55);
+  animation: wishStarPulse 1.6s ease-in-out infinite;
+}
+
 .reset-button {
   margin-top: 18px;
   border: 1px solid rgba(255, 230, 198, 0.36);
@@ -186,6 +197,33 @@ body.complete .message {
   transition: top 4s linear, transform 4s ease, opacity 700ms ease;
 }
 
+.shooting-wish {
+  position: fixed;
+  width: 120px;
+  height: 2px;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 242, 197, 0.2), #fff3c6);
+  box-shadow: 0 0 18px rgba(255, 218, 117, 0.62);
+  transform: rotate(-18deg);
+  animation: wishStreak 2.2s ease-out forwards;
+}
+
+.shooting-wish::after {
+  content: "";
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff8df;
+  box-shadow: 0 0 18px #ffe6a8, 0 0 34px rgba(255, 209, 102, 0.7);
+  transform: translateY(-50%);
+}
+
 @keyframes starPulse {
   0%,
   100% {
@@ -209,6 +247,33 @@ body.complete .message {
 
   50% {
     box-shadow: 0 0 24px rgba(255, 204, 229, 0.98), 0 0 56px rgba(255, 107, 182, 0.68);
+  }
+}
+
+@keyframes wishStarPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 18px rgba(255, 230, 168, 0.72), 0 0 40px rgba(255, 200, 87, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 28px rgba(255, 243, 198, 0.98), 0 0 64px rgba(255, 200, 87, 0.72);
+  }
+}
+
+@keyframes wishStreak {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(-18deg) scaleX(0.25);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(140vw, 26vh, 0) rotate(-18deg) scaleX(1);
   }
 }
 

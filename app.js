@@ -6,8 +6,28 @@ const resetButton = document.getElementById("resetButton");
 let stars = [];
 let selected = [];
 let backgroundStars = [];
+let completedConstellation = null;
 
-const pattern = [1, 2, 3, 4, 5, 6, 7, 8, 1];
+const constellations = [
+  {
+    id: "heart",
+    pattern: [1, 2, 3, 4, 5, 6, 7, 8, 1],
+    lineColor: "#ffc1dd",
+    glowColor: "#ff8fc5",
+    progressMessage: "Vas bien... la noche ya esta guardando nuestra forma.",
+    completeMessage: "Lo encontraste: entre todas las luces, mi lugar favorito siempre eres tu.",
+    animate: heartRain
+  },
+  {
+    id: "shooting-star",
+    pattern: [9, 1, 2, 3, 4, 5, 6, 7, 10, 12, 11, 8, 9],
+    lineColor: "#ffe6a8",
+    glowColor: "#ffd166",
+    progressMessage: "Sigue ese brillo... hay deseos que aprenden el camino solos.",
+    completeMessage: "Pedimos el mismo deseo: encontrarnos incluso cuando el cielo cambia.",
+    animate: shootingStarWish
+  }
+];
 
 function resize() {
   canvas.width = window.innerWidth;
@@ -68,22 +88,32 @@ function selectStar(id, element) {
   selected.push(id);
   element.classList.add("active");
 
-  const current = selected[selected.length - 1];
-  const expected = pattern[selected.length - 1];
+  const possibleConstellations = getPossibleConstellations();
 
-  if (current !== expected) {
+  if (possibleConstellations.length === 0) {
     msg.innerText = "Casi... algunas cartas tambien necesitan una segunda lectura.";
     setTimeout(resetGame, 900);
     return;
   }
 
-  if (selected.length === pattern.length) {
-    document.body.classList.add("complete");
-    msg.innerText = "Lo encontraste: entre todas las luces, mi lugar favorito siempre eres tu.";
-    heartRain();
+  const solvedConstellation = possibleConstellations.find(
+    (constellation) => selected.length === constellation.pattern.length
+  );
+
+  if (solvedConstellation) {
+    completedConstellation = solvedConstellation;
+    document.body.classList.add("complete", `${solvedConstellation.id}-complete`);
+    msg.innerText = solvedConstellation.completeMessage;
+    solvedConstellation.animate();
   } else {
-    msg.innerText = "Vas bien... la noche ya esta guardando nuestra forma.";
+    msg.innerText = possibleConstellations[0].progressMessage;
   }
+}
+
+function getPossibleConstellations() {
+  return constellations.filter((constellation) =>
+    selected.every((starId, index) => constellation.pattern[index] === starId)
+  );
 }
 
 function draw(time = 0) {
@@ -109,12 +139,14 @@ function draw(time = 0) {
       }
     });
 
-    ctx.strokeStyle = "#ffc1dd";
+    const activeConstellation = completedConstellation || getPossibleConstellations()[0] || constellations[0];
+
+    ctx.strokeStyle = activeConstellation.lineColor;
     ctx.lineWidth = 3;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.shadowBlur = 20;
-    ctx.shadowColor = "#ff8fc5";
+    ctx.shadowColor = activeConstellation.glowColor;
     ctx.stroke();
     ctx.shadowBlur = 0;
   }
@@ -124,7 +156,8 @@ function draw(time = 0) {
 
 function resetGame() {
   selected = [];
-  document.body.classList.remove("complete");
+  completedConstellation = null;
+  document.body.classList.remove("complete", "heart-complete", "shooting-star-complete");
   msg.innerText = "Hay noches que saben guardar secretos.";
   document.querySelectorAll(".star").forEach((star) => star.classList.remove("active"));
 }
@@ -147,6 +180,21 @@ function heartRain() {
 
       setTimeout(() => heart.remove(), 4200);
     }, i * 95);
+  }
+}
+
+function shootingStarWish() {
+  for (let i = 0; i < 18; i += 1) {
+    setTimeout(() => {
+      const streak = document.createElement("div");
+      streak.className = "shooting-wish";
+      streak.style.left = `${-20 - Math.random() * 20}vw`;
+      streak.style.top = `${18 + Math.random() * 52}vh`;
+      streak.style.animationDuration = `${1.7 + Math.random() * 0.9}s`;
+      document.body.appendChild(streak);
+
+      setTimeout(() => streak.remove(), 2900);
+    }, i * 130);
   }
 }
 
