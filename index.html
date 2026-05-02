@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constelación de amor</title>
+  <link rel="stylesheet" href="public/styles.css">
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+
+  <div class="ui">
+    <span class="eyebrow">Una carta escrita en estrellas para María Gracia</span>
+    <h1>Nuestra constelación</h1>
+    <button type="button" id="resetButton" class="reset-button">Reiniciar</button>
+  </div>
+
+  <div id="msg" class="message">
+    Encuentra la constelación.
+  </div>
+
+  <div id="finalModal" class="final-modal" aria-hidden="true">
+    <div class="final-modal__content" role="dialog" aria-modal="true" aria-labelledby="finalModalTitle">
+      <span id="finalModalEyebrow" class="final-modal__eyebrow">La constelación está completa</span>
+      <h2 id="finalModalTitle">TE AMO ❤️</h2>
+      <p id="finalModalText">NOS VEMOS EN AUSTRALIA</p>
+      <small id="finalModalNote">(18 <= 29)</small>
+      <a id="finalModalLink" class="final-modal__link" href="#" target="_blank" rel="noopener noreferrer">Ver viaje</a>
+      <button type="button" id="closeModalButton" class="final-modal__button">Cerrar</button>
+    </div>
+  </div>
+
+  <script src="public/app.js"></script>
+</body>
+</html>
