@@ -28,11 +28,11 @@ const constellations = [
       "Nos conocimos el 19 de abril del 2019.",
       "Desde ese día solo he podido pensar en tus ojos.",
       "Estamos juntos más de 6 años, y tal vez solo es el principio.",
-      "Quiero seguir toda mi vida contigo. Solo quiero ser mejor para tí",
+      "Quiero seguir toda mi vida contigo. Solo quiero ser mejor para ti.",
       "Esforzarme por ti, cada día más; eres mi única motivación.",
       "Ahora nos toca vivir juntos al otro lado del mundo, ¿quieres?",
       "Extraño tu voz diciendo mi nombre cada 20 segundos. Perú ya no tiene sentido sin ti.",
-      "Recorremos todo ese lado del Pacífico y Atlántico juntos.",
+      "Recorreremos todo ese lado del Pacífico y Atlántico juntos.",
       "La constelación está completa."
     ],
     finalModal: {
@@ -48,8 +48,21 @@ const constellations = [
     pattern: [9, 1, 2, 3, 4, 5, 6, 7, 10, 12, 11, 8, 9],
     lineColor: "#ffe6a8",
     glowColor: "#ffd166",
-    message: shootingStarMessage,
-    revealMessageAt: 2,
+    messages: [
+      "Hay otro camino escondido en este cielo.",
+      "Sigue un poco más.",
+      shootingStarMessage,
+      "Imaginé ese viaje contigo más de una vez.",
+      "Un lugar nuevo, pero tú y yo como casa.",
+      "Australia nos espera con otro cielo.",
+      "Y Oceanía con otra forma de empezar.",
+      "Quiero caminarlo todo contigo.",
+      "No como un sueño lejano.",
+      "Como un plan que empieza a tener fecha.",
+      "Cada tramo también puede ser nuestro.",
+      "Lo miro y pienso: ahí quiero verte sonreír.",
+      "La constelación está completa."
+    ],
     finalModal: {
       eyebrow: "El viaje ya tiene cielo",
       title: "Recorreremos Australia y Oceanía juntos",
@@ -107,7 +120,6 @@ function createStars() {
   stars.forEach((star) => {
     const element = document.createElement("button");
     element.className = "star";
-    element.textContent = star.id;
     element.setAttribute("aria-label", `Estrella ${star.id}`);
     element.style.left = `${star.x}px`;
     element.style.top = `${star.y}px`;
@@ -125,7 +137,7 @@ function selectStar(id, element) {
   const possibleConstellations = getPossibleConstellations();
 
   if (possibleConstellations.length === 0) {
-    msg.innerText = "Hay noches que saben guardar secretos, sigue intentando.";
+    setMessage("Hay noches que saben guardar secretos, sigue intentando.");
     setTimeout(resetGame, 900);
     return;
   }
@@ -137,13 +149,13 @@ function selectStar(id, element) {
   if (solvedConstellation) {
     completedConstellation = solvedConstellation;
     document.body.classList.add("complete", `${solvedConstellation.id}-complete`);
-    msg.innerText = getConstellationMessage(solvedConstellation);
+    setMessage(getConstellationMessage(solvedConstellation));
     solvedConstellation.animate();
     if (solvedConstellation.finalModal) {
       setTimeout(() => openFinalModal(solvedConstellation.finalModal), 450);
     }
   } else {
-    msg.innerText = getConstellationMessage(possibleConstellations[0]);
+    setMessage(getConstellationMessage(possibleConstellations[0]));
   }
 }
 
@@ -152,11 +164,14 @@ function getConstellationMessage(constellation) {
     return constellation.messages[selected.length - 1];
   }
 
-  if (selected.includes(constellation.revealMessageAt)) {
-    return constellation.message;
-  }
-
   return "Encuentra la constelación.";
+}
+
+function setMessage(text) {
+  msg.innerText = text;
+  msg.classList.remove("message--changed");
+  void msg.offsetWidth;
+  msg.classList.add("message--changed");
 }
 
 function getPossibleConstellations() {
@@ -208,7 +223,7 @@ function resetGame() {
   completedConstellation = null;
   document.body.classList.remove("complete", "heart-complete", "shooting-star-complete");
   closeFinalModal();
-  msg.innerText = "Encuentra la constelación.";
+  setMessage("Encuentra la constelación.");
   document.querySelectorAll(".star").forEach((star) => star.classList.remove("active"));
 }
 
