@@ -224,6 +224,105 @@ body.shooting-star-complete .star.active {
   transform: translateY(-50%);
 }
 
+.final-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  pointer-events: none;
+  opacity: 0;
+  background: rgba(5, 2, 12, 0.48);
+  backdrop-filter: blur(10px);
+  transition: opacity 360ms ease;
+}
+
+.final-modal.show {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.final-modal__content {
+  width: min(92vw, 460px);
+  padding: 30px 26px 24px;
+  border: 1px solid rgba(255, 221, 236, 0.52);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(48, 21, 43, 0.94), rgba(17, 8, 27, 0.96)),
+    radial-gradient(circle at top, rgba(255, 156, 205, 0.22), transparent 48%);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.5), 0 0 70px rgba(255, 112, 180, 0.18);
+  text-align: center;
+  transform: translateY(16px) scale(0.96);
+  transition: transform 360ms ease;
+}
+
+.final-modal.show .final-modal__content {
+  transform: translateY(0) scale(1);
+}
+
+.final-modal__eyebrow {
+  display: block;
+  margin-bottom: 12px;
+  color: rgba(255, 232, 207, 0.78);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
+}
+
+.final-modal h2 {
+  margin: 0 0 14px;
+  font-size: clamp(42px, 12vw, 68px);
+  font-weight: 400;
+  line-height: 0.92;
+  text-shadow: 0 0 30px rgba(255, 130, 193, 0.45);
+}
+
+.final-modal p {
+  margin: 0;
+  color: #fff8f3;
+  font-family: Arial, sans-serif;
+  font-size: clamp(18px, 5vw, 24px);
+  font-weight: 700;
+}
+
+.final-modal small {
+  display: block;
+  margin-top: 8px;
+  color: rgba(255, 250, 246, 0.72);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.final-modal__link,
+.final-modal__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 22px;
+  border: 1px solid rgba(255, 230, 198, 0.36);
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(255, 250, 246, 0.94);
+  color: #7b2352;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.final-modal__button {
+  margin-left: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff8f3;
+}
+
+.final-modal__link[hidden],
+.final-modal small[hidden] {
+  display: none;
+}
+
 @keyframes starPulse {
   0%,
   100% {
