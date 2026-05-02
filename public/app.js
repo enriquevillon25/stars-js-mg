@@ -2,6 +2,13 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const msg = document.getElementById("msg");
 const resetButton = document.getElementById("resetButton");
+const finalModal = document.getElementById("finalModal");
+const finalModalEyebrow = document.getElementById("finalModalEyebrow");
+const finalModalTitle = document.getElementById("finalModalTitle");
+const finalModalText = document.getElementById("finalModalText");
+const finalModalNote = document.getElementById("finalModalNote");
+const finalModalLink = document.getElementById("finalModalLink");
+const closeModalButton = document.getElementById("closeModalButton");
 
 let stars = [];
 let selected = [];
@@ -9,6 +16,7 @@ let backgroundStars = [];
 let completedConstellation = null;
 
 const shootingStarMessage = "Desde ese día solo he podido pensar en tus ojos.";
+const cruiseLink = "https://www.royalcaribbean.com/itinerary/7-night-royal-beach-club-lelepa-south-pacific-cruise-from-brisbane-on-voyager-VY07K126?sailDate=2028-02-18&packageCode=VY07K116&groupId=VY07BNE-1664577360&country=USA";
 
 const constellations = [
   {
@@ -20,13 +28,19 @@ const constellations = [
       "Nos conocimos el 19 de abril del 2019.",
       "Desde ese día solo he podido pensar en tus ojos.",
       "Estamos juntos más de 6 años, y tal vez solo es el principio.",
-      "Quiero seguir toda mi vida contigo.",
+      "Quiero seguir toda mi vida contigo. Solo quiero ser mejor para tí",
       "Esforzarme por ti, cada día más; eres mi única motivación.",
       "Ahora nos toca vivir juntos al otro lado del mundo, ¿quieres?",
-      "Extraño tu voz diciendo mi nombre cada 20 segundos.",
+      "Extraño tu voz diciendo mi nombre cada 20 segundos. Perú ya no tiene sentido sin ti.",
       "Recorremos todo ese lado del Pacífico y Atlántico juntos.",
-      "TE AMO ❤️ NOS VEMOS EN AUSTRALIA (18 <= 29)"
+      "La constelación está completa."
     ],
+    finalModal: {
+      eyebrow: "La constelación está completa",
+      title: "TE AMO ❤️",
+      text: "NOS VEMOS EN AUSTRALIA",
+      note: "(18 <= 29)"
+    },
     animate: heartRain
   },
   {
@@ -36,6 +50,14 @@ const constellations = [
     glowColor: "#ffd166",
     message: shootingStarMessage,
     revealMessageAt: 2,
+    finalModal: {
+      eyebrow: "El viaje ya tiene cielo",
+      title: "Recorreremos Australia y Oceanía juntos",
+      text: "Tengo este destino guardado para nosotros.",
+      note: "",
+      linkText: "Ver crucero",
+      linkUrl: cruiseLink
+    },
     animate: shootingStarWish
   }
 ];
@@ -117,6 +139,9 @@ function selectStar(id, element) {
     document.body.classList.add("complete", `${solvedConstellation.id}-complete`);
     msg.innerText = getConstellationMessage(solvedConstellation);
     solvedConstellation.animate();
+    if (solvedConstellation.finalModal) {
+      setTimeout(() => openFinalModal(solvedConstellation.finalModal), 450);
+    }
   } else {
     msg.innerText = getConstellationMessage(possibleConstellations[0]);
   }
@@ -182,8 +207,27 @@ function resetGame() {
   selected = [];
   completedConstellation = null;
   document.body.classList.remove("complete", "heart-complete", "shooting-star-complete");
+  closeFinalModal();
   msg.innerText = "Encuentra la constelación.";
   document.querySelectorAll(".star").forEach((star) => star.classList.remove("active"));
+}
+
+function openFinalModal(content) {
+  finalModalEyebrow.innerText = content.eyebrow;
+  finalModalTitle.innerText = content.title;
+  finalModalText.innerText = content.text;
+  finalModalNote.innerText = content.note || "";
+  finalModalNote.hidden = !content.note;
+  finalModalLink.innerText = content.linkText || "";
+  finalModalLink.href = content.linkUrl || "#";
+  finalModalLink.hidden = !content.linkUrl;
+  finalModal.classList.add("show");
+  finalModal.setAttribute("aria-hidden", "false");
+}
+
+function closeFinalModal() {
+  finalModal.classList.remove("show");
+  finalModal.setAttribute("aria-hidden", "true");
 }
 
 function heartRain() {
@@ -223,6 +267,7 @@ function shootingStarWish() {
 }
 
 resetButton.addEventListener("click", resetGame);
+closeModalButton.addEventListener("click", closeFinalModal);
 window.addEventListener("resize", resize);
 resize();
 requestAnimationFrame(draw);
